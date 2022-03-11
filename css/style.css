@@ -6,8 +6,8 @@
 body{
   background-color: #F3F5FC;
   position: relative;
-  width: 1440px;
-  height: 1024px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .container{
@@ -15,7 +15,7 @@ body{
   justify-content: space-around;
   margin-bottom: 2rem;
   position: relative;
-  
+  padding: 0px;
 }
 
 .logo{
@@ -254,13 +254,21 @@ h1 {
 }
 
 #juego{
-  display: flex;
-  flex-direction: column;
-  min-height: 60vh;
-  justify-content: space-between;
   align-items: center;
   top: 140px;
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  min-height: 55vh;
+  justify-content: space-between;
+  
+}
+
+.dibujo-ahorcado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #ahorcado{
@@ -269,7 +277,58 @@ h1 {
   margin-bottom: 3rem;
   max-width: 1200px;
   max-height: 800px;
-  
+}
+
+#letras-correctas {
+  width: 80px;
+  height: 72px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 48px;
+  line-height: 150%;
+  text-decoration: underline;
+
+  /* identical to box height, or 72px */
+  text-align: center;
+
+  color: #0A3871;
+}
+
+#guiones {
+  width: 80px;
+  height: 10px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 80px;
+  line-height: 150%;
+
+  /* identical to box height, or 72px */
+  text-align: center;
+
+  color: #0A3871;
+}
+
+.letras-erradas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+}
+
+#letras-incorrectas {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 150%;
+
+  /* identical to box height, or 36px */
+  text-align: center;
+
+  /* Gray/gray-400 */
+  color: #495057;
 }
 
 .word{

@@ -2,37 +2,52 @@ const vistaInicio = document.getElementById("inicio");
 const vistaAgregarPalabra = document.getElementById("agregar-palabra");
 const vistaJuego = document.getElementById("juego");
 
-var palabras = ["JUEGO", "ORACLE", "ONE", "ALURA", "AHORCADO", "LIBRO", "MATE", "COMIDA", "AMBIENTE", "HISTORIA", "PERSONA", "ETIQUETA", "PROGRAMA", "ESTRELLA", "ANIMAL", "JUSTICIA", "PAZ", "GUERRA", "FRIO", "CALOR", "DERECHO", "LIBERTAD", "TRABAJO", "BLOQUE", "BOLIVIA", "BRILLAR", "CADETE", "CANAL", "BARRIO", "ABEJA", "ASTROS", "CABEZA", "CABRA", "CAJA", "BANCO", "ACTO", "ABRIR", "BEBE", "BATE", "CHILE", "BRASIL", "CONO", "CORRER", "CUBA", "DEDOS", "MANOS", "PIES", "CUERPO", "PIERNAS", "PELO", "CARA", "OJOS", "NARIZ", "DIENTES", "OREJAS", "CEJAS", "LENTES"];
-
+var palabraAdivinar = "";
+var letrasAdivinadas = "";
+var letrasErradas = [];
+var intentos = 0;
+var jugando = false;
+var debug = true;
+var debugAh = false;
+const GUION = "_";
+const CANTIDADINTENTOS = 9;
+var bDPalabras = [ "archivo", "arrastrar", "beta", "biblioteca", "binario", "bug", "captura",
+"cliente", "colgar", "comando", "compilador", "componente", "comprimido",
+"controladores", "copia", "crack", "datos", "desarrollo", "editar",
+"ejecutable", "ensamblador", "freeware", "fuente", "funcionamiento", 
+"herramientas", "icono", "interfaz", "lenguaje", "licencia", "malware",
+"mantenimiento", "memoria", "modelo", "pirata", "producto", "protocolo",
+"rendimiento", "requisitos", "rutina", "servidores", "shareware",
+"sistema", "soporte", "tarea", "tester", "usuario", "utilidades", "videojuegos"
+];
 const regex = new RegExp("^[A-Z\\s]+$");
 
-function mostrar (vista){
+function mostrar(vista){
     vistaInicio.classList.add("display-none");
     vistaAgregarPalabra.classList.add("display-none");
     vistaJuego.classList.add("display-none");
     vista.classList.remove("display-none");
 }
 
-function escogerPalabra (array){
-    const posicionRandom = Math.round(Math.random() * (array.length-1));
-    const secreto = array[posicionRandom];
-    //Eliminamos la palabra del array asi no se vuelve a elegir.
-    array.splice(posicionRandom,1);
-    return secreto;
-}
+function guionesDibujar() {
+    let guiones = [];
+    for (var i = 0; i < palabraAdivinar.length; i++){
+        guiones.push(GUION)
+    }
+    letrasAdivinadas = guiones;
+};
 
-function mostrarGuiones (palabra){
-    const word = document.querySelector(".word");
-    word.innerHTML = "";
-    const cantidad = palabra.length;
-    for (let i = 0; i < cantidad; i++) {
-        const letra = palabra[i];
-        word.innerHTML += `<div class="letter">
-                                <p class="${letra} display-none">${letra}</p>
-                                <img src="img/underline.png">
-                            </div>`;
+function palabraSecreta(){
+    intentos = CANTIDADINTENTOS;
+    palabraAdivinar = bDPalabras[Math.floor(Math.random() * bDPalabras.length)].toUpperCase();
+    letrasAdivinadas = "";
+    letrasErradas = [];
+    // Debug
+    if (debug){ 
+        console.log("Palabra :" + palabraAdivinar);
+        console.log("Intentos: " + intentos);
     };
-}
+};
 
 function mostrarLetraCorrecta(letra) { 
     const letter = document.querySelectorAll(`.${letra}`);
@@ -48,102 +63,160 @@ function escribirLetraIncorrecta(errores) {
     
 }
 
-function estaEnPalabra(letra, palabra) {
-    return palabra.includes(letra);
-}
+function gDibujarAhorcado(paso){
+    if (debugAh){
+        console.log("Dibujo Ahorcado: " + paso);
+    };
+    switch (paso) {
+        case 8:
+            pBase();
+            p1GColumnaAh();
+            break;
+        case 7:
+            p2GTiranteAh();
+            break;
+        case 6:
+            p3GCuerdaAh();
+            break;
+        case 5:
+            p4GCabeza();
+            break;
+        case 4:
+            p5GCuerpoAh();
+            break;
+        case 3:
+            p6GPiernaDerAh();
+            break;
+        case 2:
+            p7GPiernaIzqAh();
+            break;
+        case 1:
+            p8GBrazoDerAh();
+            break;
+        case 0:
+            p9GBrazoIzqAh();
+            break;
+        default:
+            p0GLimpiarPizarra();
+            break;
+    };
+};
 
-function advertir(frase, colorbg) {
-    const adv = document.querySelector(".advertencias");
-    adv.textContent = frase;
-    adv.style.backgroundColor = colorbg;
-    adv.style.opacity = "1";
-    adv.style.marginBottom = "1rem"; 
-    setTimeout(() => {
-        adv.style.opacity = "0"; 
-    }, 2000);
-}
 
-function verificarLetra(secreto, errores, letrasCorrectas, nodo=document) {
-    nodo.addEventListener("keyup", function eventoKeyUp (e){
-        let key = (screen.width < 1080) ? e.target.value : e.key;
-        if (regex.test(key)) {
-            let letra = key;
-            if (estaEnPalabra(letra, secreto)) {
-                if (!letrasCorrectas.includes(letra)) {
-                    letrasCorrectas.push(letra);
-                    mostrarLetraCorrecta(letra);
-                }else{
-                    advertir(letra + " ya fue agregada", "green");
-                }
-            }else{
-                if (!errores.includes(letra)) {
-                    errores.push(letra);
-                    escribirLetraIncorrecta(errores);
-                    switch (errores.length) {
-                        case 1:
-                            dibujarCabeza()
-                            break;
-                        case 2:
-                            dibujarCuerpo()
-                            break;
-                        case 3:
-                            dibujarPiernaDerecha()
-                            break;
-                        case 4:
-                            dibujarPiernaIzquierda()
-                            break;
-                        case 5:
-                            dibujarBrazoDerecho()
-                            break;
-                        case 6:
-                            dibujarBrazoIzquierdo()
-                            break;
-                    }
-                }else{
-                    advertir(letra + " ya fue agregada", "yellow");
-                }
-            }
-            let fin = verificarFinJuego(secreto, letrasCorrectas, errores);
-            fin && nodo.removeEventListener("keyup", eventoKeyUp);
-        }else{
-            advertir("Solo se permiten LETRAS MAYUSCULAS", "red");
+function guiConstruirTd(dato){
+    var td = document.createElement("td");
+    td.textContent = dato;
+    return td;
+};
+
+function guiConstruirTrLetrasCorrectas(){
+    var trLetrasAdivinadas = document.getElementById("letras-correctas");
+    for (let i = 0; i < letrasAdivinadas.length; i++){
+        if (letrasAdivinadas[i] != GUION){
+            trLetrasAdivinadas.appendChild(guiConstruirTd(letrasAdivinadas[i]));
+        } else {
+            trLetrasAdivinadas.appendChild(guiConstruirTd("_"));
+        };
+    };
+};
+
+function guiPresentarLetrasCorrectas(){
+    var trLetrasAdivinadas = document.getElementById("letras-correctas");
+    var cadaTdLetrasAdivinadas = trLetrasAdivinadas.getElementsByTagName("td");
+    for (let i = 0; i < letrasAdivinadas.length; i++){
+        if (letrasAdivinadas[i] != GUION){
+            cadaTdLetrasAdivinadas[i].innerText = letrasAdivinadas[i];
+        } else {
+            cadaTdLetrasAdivinadas[i].innerText = "_";
+        };
+    }
+};
+
+function guiAgregarLetraIncorrecta(letra){
+    var trLetrasErradas = document.getElementById("letras-incorrectas");
+    trLetrasErradas.appendChild(guiConstruirTd(letra));
+};
+
+function ingresarLetraAdivinada(letraCorrecta){
+    for (var idx = 0; idx < palabraAdivinar.length; idx++){
+        if (palabraAdivinar[idx] == letraCorrecta) {
+            letrasAdivinadas[idx] = letraCorrecta;
         }
-    })
-}
-
-function verificarFinJuego(secreto, letrasCorrectas, errores){
-    if (errores.length == 6) {
-        escribirTexto("PERDISTE","red");
-        mostrarPalabra(secreto);
-        btnDesistir.classList.add("display-none");
-        return true
+        if (palabraAdivinar == letrasAdivinadas.join("")){
+            pGGanaste();
+            console.log("Ganaste!!!");
+            jugando = false;
+        }
     }
-    const dataArr = new Set(secreto);
-    let arraySecreto = [...dataArr];
-    if (letrasCorrectas.length == arraySecreto.length) {
-        escribirTexto("GANASTE","green");
-        btnDesistir.classList.add("display-none");
-        return true
-    }
-    return false
-}
+};
 
+function ingresarLetraIncorrecta(letraIncorrecta){
+    if (errores.includes(letraIncorrecta)){
+        alert(letraIncorrecta + " ya ingresada!");
+    }
+    if (!letrasErradas.includes(letraIncorrecta)){
+        letrasErradas.push(letraIncorrecta);
+        errores += letraIncorrecta;
+        guiAgregarLetraIncorrecta(letraIncorrecta);
+        intentos -= 1;
+        gDibujarAhorcado(intentos);
+        if (intentos == 0){
+            pGPerdiste();
+            console.log("Perdiste!!!");
+            jugando = false;
+        }
+    }
+};
+
+function procesarLetra(letra){
+    if (regex.test(letra)){
+        return letra[0].toUpperCase();
+    }else{
+        alert("Solo letras mayúsculas!");
+    }
+};
+
+function verificarLetra(letraAVerificar) {
+    if (palabraAdivinar.includes(letraAVerificar)){
+        ingresarLetraAdivinada(letraAVerificar);
+        guiPresentarLetrasCorrectas();
+        if (debug){
+            console.log("Letra ingresada como Adivinada: " + letrasAdivinadas);
+        };
+
+    } else if (letraAVerificar != undefined){
+        ingresarLetraIncorrecta(letraAVerificar);
+        if (debug){
+            console.log("Letra ingresada como Erradas: " + letrasErradas);
+            console.log("Intentos: " + intentos);
+        };
+    };
+};
 
 function IniciarJuego (){
-    let errores = [];
+    errores = [];
+    jugando = true;
     let letrasCorrectas = [];
-    const secreto = escogerPalabra(palabras);
-    /*const mobile = inputMobile();*/
-    mostrarGuiones(secreto);
+    palabraSecreta();
     mostrar(vistaJuego);
-    verificarLetra(secreto, errores, letrasCorrectas);
+    guionesDibujar();
+    guiConstruirTrLetrasCorrectas();
+    
 }
+
+document.addEventListener('keyup', function(event) {
+    console.log(event.key);
+    if (jugando) {
+        verificarLetra(procesarLetra(event.key));
+    };
+});
+
 
 function AgregarPalabra (palabra){
     if (palabra != "") {
         nuevaPalabra = palabra.replace(/ /g, "").toUpperCase();
-        if (!palabras.includes(nuevaPalabra)){
-            palabras.push(nuevaPalabra);
+        if (!bDPalabras.includes(nuevaPalabra)){
+            bDPalabras.push(nuevaPalabra);
             alert("Se agregó: " + nuevaPalabra);
         }else{
             alert(nuevaPalabra + " ya se habia agregado");
@@ -153,7 +226,9 @@ function AgregarPalabra (palabra){
 }
 
 const btnInciarJuego = document.getElementById("button-inicio");
-btnInciarJuego.onclick = IniciarJuego;
+btnInciarJuego.addEventListener("click", ()=> {
+    IniciarJuego();
+})
 
 const btnAgregarPalabra = document.getElementById("button-agregar");
 btnAgregarPalabra.onclick = ()=>{mostrar(vistaAgregarPalabra)};
@@ -181,24 +256,13 @@ const btnNuevoJuego = document.getElementById("nuevoJuego");
 btnNuevoJuego.onclick = ()=>{
     sessionStorage.removeItem("array");
     location.reload();
+    jugando = true;
 };
 
 const btnDesistir = document.getElementById("desistir");
 btnDesistir.onclick = ()=>{
-    sessionStorage.setItem("array", JSON.stringify(palabras));
+    sessionStorage.setItem("array", JSON.stringify(bDPalabras));
     location.reload();
-}
-
-//Capturamos array existente en sessionStorage con las palabras que no se han jugado y asi iniciar el juego desde este punto.
-let nuevoArray = JSON.parse(sessionStorage.getItem("array"));
-if (nuevoArray) {
-    if (nuevoArray.length > 0) {
-        palabras = nuevoArray;
-        console.log(nuevoArray);
-        IniciarJuego();
-    }else{
-        escribirTexto("PERDISTE","red");
-        btnDesistir.classList.add("display-none");
-        mostrar(vistaJuego);
-    }
+    jugando = false;
+    mostrar(vistaInicio);
 }

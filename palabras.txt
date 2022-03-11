@@ -1,0 +1,9 @@
+[ "archivo", "arrastrar", "beta", "biblioteca", "binario", "bug", "captura",
+"cliente", "colgar", "comando", "compilador", "componente", "comprimido",
+"controladores", "copia", "crack", "datos", "desarrollo", "editar",
+"ejecutable", "ensamblador", "freeware", "fuente", "funcionamiento", 
+"herramientas", "icono", "interfaz", "lenguaje", "licencia", "malware",
+"mantenimiento", "memoria", "modelo", "pirata", "producto", "protocolo",
+"rendimiento", "requisitos", "rutina", "servidores", "shareware",
+"sistema", "soporte", "tarea", "tester", "usuario", "utilidades", "videojuegos"
+]

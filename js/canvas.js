@@ -1,63 +1,103 @@
-const canvas = document.getElementById("ahorcado");
-var pincel = canvas.getContext("2d");
+const pantalla = document.getElementById("ahorcado");
+var pincel = pantalla.getContext("2d");
 
 /* Definimos estilos del pincel */
 pincel.strokeStyle = "#0A3871";
-pincel.lineWidth = 2;
+pincel.lineWidth = 4;
+pincel.font = "48px Inter";
 
 /* Dibujamos la horca inicial*/
-pincel.beginPath();
-pincel.moveTo(200,350);
-pincel.lineTo(400,350);
-pincel.moveTo(260,350);
-pincel.lineTo(260,50);
-pincel.moveTo(260,50);
-pincel.lineTo(370,50);
-pincel.moveTo(370,50);
-pincel.lineTo(370,80);
-pincel.stroke();
 
-function dibujarCabeza() {
+function pGGanaste(){
+	pincel.fillStyle = "White";
+	pincel.fillRect(130, 140, 220, 55);
+	pincel.fillStyle = "Green";
+	pincel.fillText("¡Ganaste!", 140, 180);
+};
+
+function pGPerdiste(){
+	pincel.fillStyle = "White";
+	pincel.fillRect(130, 140, 220, 55);
+	pincel.fillStyle = "Red";
+	pincel.fillText("¡Perdiste!", 140, 180);
+};
+
+function p0GLimpiarPizarra(){
+	pincel.clearRect(0, 0, pantalla.width, pantalla.height);
+	pincel.beginPath();
+	pincel.moveTo(140, 300);
+	pincel.lineTo(340, 300);
+	pincel.stroke();
+};
+
+function pBase(){
     pincel.beginPath();
-    pincel.arc(370,100,20,0,2*3.14);
+    pincel.moveTo(200, 300);
+    pincel.lineTo(280, 300);
     pincel.stroke();
 }
 
-function dibujarCuerpo() {
-    pincel.beginPath();
-    pincel.moveTo(370,120);
-    pincel.lineTo(370,240);
-    pincel.stroke();
-}
+function p1GColumnaAh(){
+	pincel.beginPath();
+	pincel.moveTo(240, 300);
+	pincel.lineTo(240, 60);
+	pincel.stroke();
+};
 
-function dibujarPiernaDerecha() {
-    pincel.beginPath();
-    pincel.moveTo(370,240);
-    pincel.lineTo(400,290);
-    pincel.stroke();
-}
+function p2GTiranteAh(){
+	pincel.beginPath();
+	pincel.moveTo(238, 60);
+	pincel.lineTo(315, 60);
+	pincel.stroke();
+};
 
-function dibujarPiernaIzquierda(){
-    pincel.beginPath();
-    pincel.moveTo(370,240);
-    pincel.lineTo(340,290);
-    pincel.stroke();
-}
+function p3GCuerdaAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 58);
+	pincel.lineTo(315, 80);
+	pincel.stroke();
+};
 
-function dibujarBrazoDerecho(){
-    pincel.beginPath();
-    pincel.moveTo(370,120);
-    pincel.lineTo(400,170);
-    pincel.stroke();
-}
+function p4GCabeza(){
+	pincel.beginPath();
+	pincel.arc(315, 105, 25, 0, 2 * Math.PI);
+	pincel.stroke();
+};
 
-function dibujarBrazoIzquierdo(){
-    pincel.beginPath();
-    pincel.moveTo(370,120);
-    pincel.lineTo(340,170);
-    pincel.stroke();
-}
+function p5GCuerpoAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 130);
+	pincel.lineTo(315, 210);
+	pincel.stroke();
+};
 
+function p6GPiernaDerAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 210);
+	pincel.lineTo(340, 235);
+	pincel.stroke();
+};
+
+function p7GPiernaIzqAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 210);
+	pincel.lineTo(290, 235);
+	pincel.stroke();
+};
+
+function p8GBrazoDerAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 150);
+	pincel.lineTo(340, 175);
+	pincel.stroke();
+};
+
+function p9GBrazoIzqAh() {
+	pincel.beginPath();
+	pincel.moveTo(315, 150);
+	pincel.lineTo(290, 175);
+	pincel.stroke();
+};
 function escribirTexto(texto, color) {
     pincel.beginPath();
     pincel.fillStyle = color;

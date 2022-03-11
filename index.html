@@ -27,20 +27,7 @@
       </div>
 
       <section class="container">
-        <!-- 
-        <div style="text-align:center; margin: 50px 0px;">
-          <h1 class="titulo">Ahorcado</h1>
-          
-        </div>
-        <div style="text-align:center">
-          <input class="text-input" type="text" id="input-nueva-palabra" placeholder="Escriba una nueva palabra">
-          
-        </div>
-        <div style="text-align:center;">
-          <canvas id="ahorcado" height="800px" width="1200px"></canvas>
-        </div>
-        -->
-        <div class="inicio-container" id="inicio">
+        <div class="inicio-container" id="inicio" style="width: 100%; height: 200%;">
           <h1>AHORCADO</h1>
           <button id="button-inicio" class="button-inicio">
             <div class="btn-1-text">Iniciar juego</div></button>
@@ -63,47 +50,26 @@
             <button class="btn btn-guardar" style="width: 20.75rem; margin: 1rem;" id="guardar">Guardar y empezar</button>
             <button class="btn" id="cancelar" style="width: 20.75rem; margin: 1rem;">Cancelar</button> 
           </div> 
-        </div>
+        </div>     
         
         <div id="juego" class="display-none">
-          <canvas id="ahorcado" width="600" height="400"></canvas>
-          <div class="word">
-    
-            <div class="letter">
-              <p>P</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>E</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>R</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>D</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>I</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>S</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>T</p>
-              <img src="img/underline.png">
-            </div>
-            <div class="letter">
-              <p>E</p>
-              <img src="img/underline.png">
-            </div>
-    
+          <div class="dibujo-ahorcado">
+            <canvas id="ahorcado" width="480px" height="360px"></canvas>
           </div>
-
+          <div class="letras-adivinadas">
+            <table id="tabla-letras-correctas">
+              <tr id="letras-correctas">
+              </tr>
+            </table>
+          </div>
+          <div class="tabla-guiones"></div>
+          <div class="letras-erradas">
+            <table id="tabla-letras-incorrectas">
+              <tr id="letras-incorrectas">
+                <td> </td>
+              </tr>
+            </table>
+          </div>
           <div>
             <button class="btn btn-nuevo" style="width: 20.75rem; margin: 1rem;" id="nuevoJuego">Nuevo juego</button>
             <button class="btn btn-desistir" id="desistir" style="width: 20.75rem; margin: 1rem;">Desistir</button> 
